@@ -1,6 +1,6 @@
-/* Template: Corso - Free Training Course Landing Page Template
+/* Template: Aria - Business HTML Landing Page Template
    Author: Inovatik
-   Created: Nov 2019
+   Created: Jul 2019
    Description: Custom JS file
 */
 
@@ -24,7 +24,7 @@
 	/* Navbar Scripts */
 	// jQuery to collapse the navbar on scroll
     $(window).on('scroll load', function() {
-		if ($(".navbar").offset().top > 60) {
+		if ($(".navbar").offset().top > 20) {
 			$(".fixed-top").addClass("top-nav-collapse");
 		} else {
 			$(".fixed-top").removeClass("top-nav-collapse");
@@ -49,123 +49,47 @@
     });
 
 
-    /* Countdown Timer - The Final Countdown */
-	$('#clock').countdown('2020/12/27 08:50:56') /* change here your "countdown to" date */
-	.on('update.countdown', function(event) {
-		var format = '<span class="counter-number">%D<br><span class="timer-text">Days</span></span><span class="counter-number">%H<br><span class="timer-text">Hours</span></span><span class="counter-number">%M<br><span class="timer-text">Minutes</span></span><span class="counter-number">%S<br><span class="timer-text">Seconds</span></span>';
-		$(this).html(event.strftime(format));
-	})
-	.on('finish.countdown', function(event) {
-	$(this).html('This offer has expired!')
-		.parent().addClass('disabled');
-    });
-
-
-    /* Image Slider 2 - Swiper */
-    var imageSliderOne = new Swiper('.image-slider-1', {
-        autoplay: {
-            delay: 3000,
-            disableOnInteraction: false
-		},
-        loop: true,
-        navigation: {
-			nextEl: '.swiper-button-next',
-			prevEl: '.swiper-button-prev',
+    /* Rotating Text - Morphtext */
+	$("#js-rotating").Morphext({
+		// The [in] animation type. Refer to Animate.css for a list of available animations.
+		animation: "fadeIn",
+		// An array of phrases to rotate are created based on this separator. Change it if you wish to separate the phrases differently (e.g. So Simple | Very Doge | Much Wow | Such Cool).
+		separator: ",",
+		// The delay between the changing of each phrase in milliseconds.
+		speed: 2000,
+		complete: function () {
+			// Called after the entrance animation is executed.
 		}
     });
+    
 
-
-    /* Image Slider - Swiper */
-    var imageSliderTwo = new Swiper('.image-slider-2', {
-        autoplay: {
-            delay: 2000,
-            disableOnInteraction: false
-		},
-        loop: true,
-        spaceBetween: 30,
-        slidesPerView: 5,
-		breakpoints: {
-            // when window is <= 580px
-            580: {
-                slidesPerView: 1,
-                spaceBetween: 10
-            },
-            // when window is <= 768px
-            768: {
-                slidesPerView: 2,
-                spaceBetween: 20
-            },
-            // when window is <= 992px
-            992: {
-                slidesPerView: 3,
-                spaceBetween: 20
-            },
-            // when window is <= 1200px
-            1200: {
-                slidesPerView: 4,
-                spaceBetween: 20
-            },
-
-        }
-    });
-
-
-    /* Text Slider - Swiper */
-	var textSlider = new Swiper('.text-slider', {
-        autoplay: {
-            delay: 6000,
+    /* Card Slider - Swiper */
+	var cardSlider = new Swiper('.card-slider', {
+		autoplay: {
+            delay: 4000,
             disableOnInteraction: false
 		},
         loop: true,
         navigation: {
 			nextEl: '.swiper-button-next',
 			prevEl: '.swiper-button-prev'
-        },
-        spaceBetween: 70,
-        slidesPerView: 2,
-		breakpoints: {
-            // when window is <= 1199px
-            1199: {
-                slidesPerView: 1,
+		},
+		slidesPerView: 3,
+		spaceBetween: 20,
+        breakpoints: {
+            // when window is <= 992px
+            992: {
+                slidesPerView: 2
             },
+            // when window is <= 768px
+            768: {
+                slidesPerView: 1
+            } 
         }
     });
+
     
-
-    /* Video Lightbox - Magnific Popup */
-    $('.popup-youtube, .popup-vimeo').magnificPopup({
-        disableOn: 700,
-        type: 'iframe',
-        mainClass: 'mfp-fade',
-        removalDelay: 160,
-        preloader: false,
-        fixedContentPos: false,
-        iframe: {
-            patterns: {
-                youtube: {
-                    index: 'youtube.com/', 
-                    id: function(url) {        
-                        var m = url.match(/[\\?\\&]v=([^\\?\\&]+)/);
-                        if ( !m || !m[1] ) return null;
-                        return m[1];
-                    },
-                    src: 'https://www.youtube.com/embed/%id%?autoplay=1'
-                },
-                vimeo: {
-                    index: 'vimeo.com/', 
-                    id: function(url) {        
-                        var m = url.match(/(https?:\/\/)?(www.)?(player.)?vimeo.com\/([a-z]*\/)*([0-9]{6,11})[?]?.*/);
-                        if ( !m || !m[5] ) return null;
-                        return m[5];
-                    },
-                    src: 'https://player.vimeo.com/video/%id%?autoplay=1'
-                }
-            }
-        }
-    });
-
-
-    /* Details Lightbox - Magnific Popup */
+    /* Lightbox - Magnific Popup */
 	$('.popup-with-move-anim').magnificPopup({
 		type: 'inline',
 		fixedContentPos: false, /* keep it false to avoid html tag shift with margin-right: 17px */
@@ -176,9 +100,64 @@
 		midClick: true,
 		removalDelay: 300,
 		mainClass: 'my-mfp-slide-bottom'
-	});
+    });
     
+
+    /* Filter - Isotope */
+    var $grid = $('.grid').isotope({
+        // options
+        itemSelector: '.element-item',
+        layoutMode: 'fitRows'
+    });
     
+    // filter items on button click
+    $('.filters-button-group').on( 'click', 'a', function() {
+        var filterValue = $(this).attr('data-filter');
+        $grid.isotope({ filter: filterValue });
+    });
+    
+    // change is-checked class on buttons
+    $('.button-group').each( function( i, buttonGroup ) {
+        var $buttonGroup = $( buttonGroup );
+        $buttonGroup.on( 'click', 'a', function() {
+            $buttonGroup.find('.is-checked').removeClass('is-checked');
+            $( this ).addClass('is-checked');
+        });	
+    });
+    
+
+    /* Counter - CountTo */
+	var a = 0;
+	$(window).scroll(function() {
+		if ($('#counter').length) { // checking if CountTo section exists in the page, if not it will not run the script and avoid errors	
+			var oTop = $('#counter').offset().top - window.innerHeight;
+			if (a == 0 && $(window).scrollTop() > oTop) {
+			$('.counter-value').each(function() {
+				var $this = $(this),
+				countTo = $this.attr('data-count');
+				$({
+				countNum: $this.text()
+				}).animate({
+					countNum: countTo
+				},
+				{
+					duration: 2000,
+					easing: 'swing',
+					step: function() {
+					$this.text(Math.floor(this.countNum));
+					},
+					complete: function() {
+					$this.text(this.countNum);
+					//alert('finished');
+					}
+				});
+			});
+			a = 1;
+			}
+		}
+    });
+
+
     /* Move Form Fields Label When User Types */
     // for input and textarea fields
     $("input, textarea").keyup(function(){
@@ -190,114 +169,61 @@
     });
 
 
-    /* Registration Form */
-    $("#registrationForm").validator().on("submit", function(event) {
+    /* Call Me Form */
+    $("#callMeForm").validator().on("submit", function(event) {
     	if (event.isDefaultPrevented()) {
             // handle the invalid form...
-            rformError();
-            rsubmitMSG(false, "Please fill all fields!");
+            lformError();
+            lsubmitMSG(false, "Please fill all fields!");
         } else {
             // everything looks good!
             event.preventDefault();
-            rsubmitForm();
+            lsubmitForm();
         }
     });
 
-    function rsubmitForm() {
+    function lsubmitForm() {
         // initiate variables with form content
-		var name = $("#rname").val();
-		var email = $("#remail").val();
-		var phone = $("#rphone").val();
-        var terms = $("#rterms").val();
+		var name = $("#lname").val();
+		var phone = $("#lphone").val();
+		var email = $("#lemail").val();
+		var select = $("#lselect").val();
+        var terms = $("#lterms").val();
         
         $.ajax({
             type: "POST",
-            url: "php/registrationform-process.php",
-            data: "name=" + name + "&email=" + email + "&phone=" + phone + "&terms=" + terms, 
+            url: "php/callmeform-process.php",
+            data: "name=" + name + "&phone=" + phone + "&email=" + email + "&select=" + select + "&terms=" + terms, 
             success: function(text) {
                 if (text == "success") {
-                    rformSuccess();
+                    lformSuccess();
                 } else {
-                    rformError();
-                    rsubmitMSG(false, text);
+                    lformError();
+                    lsubmitMSG(false, text);
                 }
             }
         });
 	}
 
-    function rformSuccess() {
-        $("#registrationForm")[0].reset();
-        rsubmitMSG(true, "Request Submitted!");
+    function lformSuccess() {
+        $("#callMeForm")[0].reset();
+        lsubmitMSG(true, "Request Submitted!");
         $("input").removeClass('notEmpty'); // resets the field label after submission
     }
 
-    function rformError() {
-        $("#registrationForm").removeClass().addClass('shake animated').one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function() {
+    function lformError() {
+        $("#callMeForm").removeClass().addClass('shake animated').one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function() {
             $(this).removeClass();
         });
 	}
 
-    function rsubmitMSG(valid, msg) {
+    function lsubmitMSG(valid, msg) {
         if (valid) {
             var msgClasses = "h3 text-center tada animated";
         } else {
             var msgClasses = "h3 text-center";
         }
-        $("#rmsgSubmit").removeClass().addClass(msgClasses).text(msg);
-    }
-    
-
-    /* Newsletter Form */
-    $("#newsletterForm").validator().on("submit", function(event) {
-    	if (event.isDefaultPrevented()) {
-            // handle the invalid form...
-            nformError();
-            nsubmitMSG(false, "Please fill all fields!");
-        } else {
-            // everything looks good!
-            event.preventDefault();
-            nsubmitForm();
-        }
-    });
-
-    function nsubmitForm() {
-        // initiate variables with form content
-		var email = $("#nemail").val();
-        var terms = $("#nterms").val();
-        $.ajax({
-            type: "POST",
-            url: "php/newsletterform-process.php",
-            data: "email=" + email + "&terms=" + terms, 
-            success: function(text) {
-                if (text == "success") {
-                    nformSuccess();
-                } else {
-                    nformError();
-                    nsubmitMSG(false, text);
-                }
-            }
-        });
-	}
-
-    function nformSuccess() {
-        $("#newsletterForm")[0].reset();
-        nsubmitMSG(true, "Subscribed!");
-        $("input").removeClass('notEmpty'); // resets the field label after submission
-    }
-
-    function nformError() {
-        $("#newsletterForm").removeClass().addClass('shake animated').one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function() {
-            $(this).removeClass();
-        });
-	}
-
-    function nsubmitMSG(valid, msg) {
-        if (valid) {
-            var msgClasses = "h3 text-center tada animated";
-        } else {
-            var msgClasses = "h3 text-center";
-        }
-        $("#nmsgSubmit").removeClass().addClass(msgClasses).text(msg);
+        $("#lmsgSubmit").removeClass().addClass(msgClasses).text(msg);
     }
 
 
